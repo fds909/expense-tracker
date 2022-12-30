@@ -80,7 +80,7 @@ class ExpensesBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      margin: EdgeInsets.symmetric(horizontal: 4),
+      margin: EdgeInsets.symmetric(horizontal: 6),
       padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.green.shade700,

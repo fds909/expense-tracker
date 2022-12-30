@@ -20,7 +20,7 @@ class HomePage extends StatelessWidget {
         onPressed: () {},
         label: Text("New Expense"),
         icon: Icon(Icons.add),
-        backgroundColor: Colors.green.shade700,
+        backgroundColor: Colors.green.shade600,
       ),
     );
   }
