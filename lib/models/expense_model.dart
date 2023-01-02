@@ -1,32 +1,11 @@
-import 'dart:core';
-
 class ExpenseModel {
-  final double amount;
-  final String? description;
-  final DateTime date;
+  double amount;
+  String? description;
+  DateTime createdOn;
 
-  const ExpenseModel({
+  ExpenseModel({
     required this.amount,
-    this.description = "-",
-    required this.date,
+    required this.description,
+    required this.createdOn,
   });
 }
-
-// sample expenses
-final expenses = [
-  ExpenseModel(
-    amount: 20,
-    description: null,
-    date: DateTime(2022, 12, 31),
-  ),
-  ExpenseModel(
-    amount: 30,
-    description: "Party Ticket",
-    date: DateTime(2022, 12, 31),
-  ),
-  ExpenseModel(
-    amount: 16,
-    description: "Daily Food",
-    date: DateTime(2022, 12, 31),
-  ),
-];
