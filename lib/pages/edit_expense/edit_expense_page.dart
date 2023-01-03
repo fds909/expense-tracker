@@ -31,8 +31,38 @@ class _EditExpensePageState extends State<EditExpensePage> {
   }
 
   void onDelete() {
-    storeModel.value.deleteExpense(widget.expenseModel);
-    Navigator.pop(context);
+    // delete confirmation dialog
+    bool deleteConfirm = false;
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Delete Expense"),
+          content: Text("Are you sure you want to delete this expense?"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                deleteConfirm = false;
+                Navigator.pop(context);
+              },
+              child: Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () {
+                deleteConfirm = true;
+                Navigator.pop(context);
+              },
+              child: Text("Delete"),
+            ),
+          ],
+        );
+      },
+    ).then((value) {
+      if (deleteConfirm) {
+        storeModel.value.deleteExpense(widget.expenseModel);
+        Navigator.pop(context);
+      }
+    });
   }
 
   @override

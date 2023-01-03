@@ -17,21 +17,20 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Header(),
-          Content(),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.pushNamed(context, NewExpensePage.route);
-        },
-        label: Text("New Expense"),
-        icon: Icon(Icons.add),
-        backgroundColor: Colors.green.shade600,
-      ),
-    );
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Header(),
+            Content(),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () {
+            Navigator.pushNamed(context, NewExpensePage.route);
+          },
+          label: Text("New Expense"),
+          icon: Icon(Icons.add),
+          backgroundColor: Colors.green.shade600,
+        ));
   }
 }

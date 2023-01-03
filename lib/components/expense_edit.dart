@@ -46,7 +46,6 @@ class _ExpenseEditState extends State<ExpenseEdit> {
 
     priceController.text = widget.initialValue?.toStringAsFixed(2) ?? '';
     descriptionController.text = widget.initialDescription?.toString() ?? '';
-    print("initial value + ${widget.initialValue}");
     createdOn = widget.initialCreatedOn ?? DateTime.now();
   }
 
