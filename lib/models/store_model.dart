@@ -1,14 +1,26 @@
 // Importing: Flutter Dependencies
 import 'package:get/get.dart';
+import 'package:get_it/get_it.dart';
 
-// Importing: Project Models
+// Importing: Project Models, Repositories
 import 'package:expense_tracker/models/expense_model.dart';
+import 'package:expense_tracker/repositories/database_repository.dart';
+import 'package:uuid/uuid.dart';
 
 // We make it observable so that we can use Get to listen to changes
 final storeModel = StoreModel().obs;
 
 class StoreModel {
   List<ExpenseModel> expenses = [];
+
+  StoreModel() {
+    fetchExpenses();
+  }
+
+  fetchExpenses() async {
+    final database = GetIt.I<DatabaseRepository>();
+    expenses = await database.all();
+  }
 
   double get totalExpenseToday {
     final currentDate = DateTime.now();
@@ -73,6 +85,7 @@ class StoreModel {
     required String? description,
   }) {
     final expense = ExpenseModel(
+      uuid: Uuid().v4(),
       amount: amount,
       description: description,
       createdOn: DateTime.now(),
@@ -80,16 +93,20 @@ class StoreModel {
 
     expenses.insert(0, expense);
     storeModel.refresh();
+
+    GetIt.I<DatabaseRepository>().createExpense(expense);
   }
 
   void editExpense(
-    ExpenseModel expenseModel, {
+    ExpenseModel expense, {
     required double amount,
     required String? description,
   }) {
-    expenseModel.amount = amount;
-    expenseModel.description = description;
+    expense.amount = amount;
+    expense.description = description;
     storeModel.refresh();
+
+    GetIt.I<DatabaseRepository>().updateExpense(expense);
   }
 
   void deleteExpense(ExpenseModel expenseModel) {
