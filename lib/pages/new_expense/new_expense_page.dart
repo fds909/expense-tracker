@@ -15,10 +15,12 @@ class _NewExpensePageState extends State<NewExpensePage> {
   void onSubmit({
     required double value,
     required String? description,
+    required DateTime createdOn,
   }) {
     storeModel.value.createExpense(
       amount: value,
       description: description,
+      createdOn: createdOn,
     );
 
     Navigator.pop(context);

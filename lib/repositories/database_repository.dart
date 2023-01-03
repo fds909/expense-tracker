@@ -28,12 +28,10 @@ class DatabaseRepository {
   }
 
   // Fetches all the expenses from the database
-  Future<List<ExpenseModel>> all() async {
+  Future<List<ExpenseModel>> allExpenses() async {
     final rows = await database.query("expenses");
 
-    return rows.map((result) {
-      return ExpenseModel.fromMap(result);
-    }).toList();
+    return rows.map((row) => ExpenseModel.fromMap(row)).toList();
   }
 
   // Stores a new expense record in the database
@@ -46,6 +44,15 @@ class DatabaseRepository {
     return await database.update(
       "expenses",
       expense.toMap(),
+      where: "uuid = ?",
+      whereArgs: [expense.uuid],
+    );
+  }
+
+  // Deletes an expense record
+  Future<int> deleteExpense(ExpenseModel expense) async {
+    return await database.delete(
+      "expenses",
       where: "uuid = ?",
       whereArgs: [expense.uuid],
     );

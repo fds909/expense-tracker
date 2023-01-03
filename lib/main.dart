@@ -1,5 +1,4 @@
 // Importing: Flutter Dependencies
-import 'package:expense_tracker/models/expense_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -10,6 +9,8 @@ import 'package:get_it/get_it.dart';
 import 'package:expense_tracker/pages/home/home_page.dart';
 import 'package:expense_tracker/pages/new_expense/new_expense_page.dart';
 import 'package:expense_tracker/pages/edit_expense/edit_expense_page.dart';
+import 'package:expense_tracker/models/expense_model.dart';
+import 'package:expense_tracker/models/store_model.dart';
 import 'package:expense_tracker/repositories/database_repository.dart';
 
 void main() async {
@@ -22,6 +23,8 @@ void main() async {
 
   final database = await DatabaseRepository.newConnection();
   GetIt.I.registerSingleton<DatabaseRepository>(database);
+
+  await storeModel.value.initialize();
 
   runApp(const App());
 }

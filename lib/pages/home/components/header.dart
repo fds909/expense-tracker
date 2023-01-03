@@ -41,7 +41,7 @@ class Header extends StatelessWidget {
               ),
               SizedBox(height: 5),
               Text(
-                storeModel.value.totalExpenseMonth.toStringAsFixed(2),
+                "€ ${storeModel.value.totalExpenseMonth.toStringAsFixed(2)}",
                 style: TextStyle(
                     fontSize: 32,
                     color: Colors.white,

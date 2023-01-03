@@ -13,14 +13,12 @@ final storeModel = StoreModel().obs;
 class StoreModel {
   List<ExpenseModel> expenses = [];
 
-  StoreModel() {
-    fetchExpenses();
+  Future<void> initialize() async {
+    final database = GetIt.I<DatabaseRepository>();
+    expenses = await database.allExpenses();
   }
 
-  fetchExpenses() async {
-    final database = GetIt.I<DatabaseRepository>();
-    expenses = await database.all();
-  }
+  //--- Stats Getters ---//
 
   double get totalExpenseToday {
     final currentDate = DateTime.now();
@@ -83,12 +81,13 @@ class StoreModel {
   void createExpense({
     required double amount,
     required String? description,
+    required DateTime createdOn,
   }) {
     final expense = ExpenseModel(
       uuid: Uuid().v4(),
       amount: amount,
       description: description,
-      createdOn: DateTime.now(),
+      createdOn: createdOn,
     );
 
     expenses.insert(0, expense);
@@ -101,16 +100,20 @@ class StoreModel {
     ExpenseModel expense, {
     required double amount,
     required String? description,
+    required DateTime createdOn,
   }) {
     expense.amount = amount;
     expense.description = description;
+    expense.createdOn = createdOn;
     storeModel.refresh();
 
     GetIt.I<DatabaseRepository>().updateExpense(expense);
   }
 
-  void deleteExpense(ExpenseModel expenseModel) {
-    expenses.remove(expenseModel);
+  void deleteExpense(ExpenseModel expense) {
+    expenses.remove(expense);
     storeModel.refresh();
+
+    GetIt.I<DatabaseRepository>().deleteExpense(expense);
   }
 }

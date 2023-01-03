@@ -18,11 +18,13 @@ class _EditExpensePageState extends State<EditExpensePage> {
   void onSubmit({
     required double value,
     required String? description,
+    required DateTime createdOn,
   }) {
     storeModel.value.editExpense(
       widget.expenseModel,
       amount: value,
       description: description,
+      createdOn: createdOn,
     );
 
     Navigator.pop(context);
@@ -40,6 +42,7 @@ class _EditExpensePageState extends State<EditExpensePage> {
       onFloatingActionButtonPressed: onDelete,
       initialDescription: widget.expenseModel.description,
       initialValue: widget.expenseModel.amount,
+      initialCreatedOn: widget.expenseModel.createdOn,
       onSubmit: onSubmit,
     );
   }

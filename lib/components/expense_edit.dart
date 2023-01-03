@@ -2,21 +2,25 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vibration/vibration.dart';
+import 'package:intl/intl.dart';
 
 class ExpenseEdit extends StatefulWidget {
   final double? initialValue;
   final String? initialDescription;
+  final DateTime? initialCreatedOn;
   final IconData? floatingActionButtonIcon;
   final void Function()? onFloatingActionButtonPressed;
   final void Function({
     required double value,
     required String? description,
+    required DateTime createdOn,
   }) onSubmit;
 
   const ExpenseEdit({
+    super.key,
     this.initialValue,
     this.initialDescription,
-    super.key,
+    this.initialCreatedOn,
     this.floatingActionButtonIcon,
     this.onFloatingActionButtonPressed,
     required this.onSubmit,
@@ -30,6 +34,9 @@ class _ExpenseEditState extends State<ExpenseEdit> {
   // Text Controllers
   final priceController = TextEditingController();
   final descriptionController = TextEditingController();
+
+  late DateTime createdOn;
+
   // This helps to keep the text more readable when the user taps down
   bool isTappedDown = false;
 
@@ -39,11 +46,14 @@ class _ExpenseEditState extends State<ExpenseEdit> {
 
     priceController.text = widget.initialValue?.toStringAsFixed(2) ?? '';
     descriptionController.text = widget.initialDescription?.toString() ?? '';
+    print("initial value + ${widget.initialValue}");
+    createdOn = widget.initialCreatedOn ?? DateTime.now();
   }
 
   void onSubmit() async {
     final value = double.tryParse(priceController.text.trim()) ?? 0.0;
     final description = descriptionController.text.trim();
+    final createdOn = this.createdOn;
 
     if (value == 0) {
       Get.snackbar(
@@ -61,7 +71,30 @@ class _ExpenseEditState extends State<ExpenseEdit> {
     widget.onSubmit(
       value: value,
       description: description.isEmpty ? null : description,
+      createdOn: createdOn,
     );
+  }
+
+  void onCreatedOnTap() async {
+    final date = await showDatePicker(
+        context: context,
+        initialDate: createdOn,
+        firstDate: DateTime(1975),
+        lastDate: DateTime.now(),
+        builder: (context, child) => Theme(
+              data: ThemeData.light().copyWith(
+                colorScheme: ColorScheme.light().copyWith(
+                  primary: Colors.green.shade600,
+                ),
+              ),
+              child: child!,
+            ));
+
+    if (date != null) {
+      setState(() {
+        createdOn = date;
+      });
+    }
   }
 
   @override
@@ -138,11 +171,25 @@ class _ExpenseEditState extends State<ExpenseEdit> {
                 border: InputBorder.none,
               ),
             ),
+            SizedBox(height: 20),
+            // Input Date
+            IntrinsicWidth(
+              child: InkWell(
+                onTap: onCreatedOnTap,
+                child: Text("${DateFormat("dd MMMM y").format(createdOn)}",
+                    style: TextStyle(
+                      fontSize: 20,
+                      color:
+                          isTappedDown ? Colors.white : Colors.green.shade700,
+                      fontWeight: FontWeight.w600,
+                    )),
+              ),
+            ),
             SizedBox(height: 32),
             Text(
               "Tap and hold to submit",
               style: TextStyle(
-                color: Colors.green.shade700,
+                color: Colors.grey.shade600,
                 fontWeight: FontWeight.w500,
               ),
             ),
